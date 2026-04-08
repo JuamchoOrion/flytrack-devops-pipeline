@@ -50,6 +50,15 @@ El pipeline automatiza las siguientes etapas en orden:
 
 ## Cómo ejecutar localmente
 
+## Backend
+# Construir la imagen
+docker build -t flytrack-backend .
+
+## Ejecutar el contenedor
+docker run -p 3000:3000 --name flytrack-api flytrack-backend
+## Probar
+localhost:3000/api/flights
+
 ```bash
 # Clonar el repositorio
 git clone https://github.com/<org>/flytrack-devops-pipeline.git
@@ -99,3 +108,85 @@ errores en producción, despliegues manuales y falta de trazabilidad.
 **Solución propuesta:** implementar un pipeline CI/CD completo con
 automatización de pruebas, contenedorización Docker y despliegue
 continuo a un entorno de staging controlado.
+
+## Arbol estructura del proyecto
+flytrack/
+├── .github/
+│   └── workflows/
+│       └── ci-cd.yml
+├── backend/
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── database.js
+│   │   ├── controllers/
+│   │   │   ├── flightController.js
+│   │   │   ├── notificationController.js
+│   │   │   ├── baggageController.js
+│   │   │   └── dashboardController.js
+│   │   ├── routes/
+│   │   │   ├── flightRoutes.js
+│   │   │   ├── notificationRoutes.js
+│   │   │   ├── baggageRoutes.js
+│   │   │   └── dashboardRoutes.js
+│   │   ├── services/
+│   │   │   ├── flightService.js
+│   │   │   ├── notificationService.js
+│   │   │   ├── baggageService.js
+│   │   │   └── dashboardService.js
+│   │   ├── repositories/
+│   │   │   ├── flightRepository.js
+│   │   │   ├── notificationRepository.js
+│   │   │   └── baggageRepository.js
+│   │   ├── middlewares/
+│   │   │   ├── errorHandler.js
+│   │   │   └── validator.js
+│   │   ├── utils/
+│   │   │   └── seed.js
+│   │   └── app.js
+│   ├── tests/
+│   │   ├── flight.test.js
+│   │   ├── notification.test.js
+│   │   └── baggage.test.js
+│   ├── .env.example
+│   ├── .gitignore
+│   ├── Dockerfile
+│   ├── package.json
+│   └── jest.config.js
+├── frontend/
+│   ├── public/
+│   │   └── vite.svg
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navbar.tsx
+│   │   │   ├── FlightCard.tsx
+│   │   │   ├── NotificationCard.tsx
+│   │   │   ├── StatCard.tsx
+│   │   │   └── LoadingSpinner.tsx
+│   │   ├── pages/
+│   │   │   ├── Dashboard.tsx
+│   │   │   ├── Flights.tsx
+│   │   │   ├── Notifications.tsx
+│   │   │   └── BaggageReport.tsx
+│   │   ├── services/
+│   │   │   └── api.ts
+│   │   ├── types/
+│   │   │   └── index.ts
+│   │   ├── App.tsx
+│   │   ├── main.tsx
+│   │   └── index.css
+│   ├── .env.example
+│   ├── .gitignore
+│   ├── Dockerfile
+│   ├── index.html
+│   ├── package.json
+│   ├── tailwind.config.js
+│   ├── postcss.config.js
+│   ├── tsconfig.json
+│   ├── tsconfig.node.json
+│   └── vite.config.ts
+├── docs/
+│   └── ARQUITECTURA.md
+├── .env.example
+├── .gitignore
+├── docker-compose.yml
+└── README.md
