@@ -1,192 +1,100 @@
-# FlyTrack — Pipeline DevOps CI/CD
+# FlyTrack - Sistema de Gestión Aeroportuaria
 
-## AeroPuerto Smart | Práctica universitaria de DevOps
+[![CI/CD Pipeline](https://github.com/tu-usuario/flytrack/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/tu-usuario/flytrack/actions/workflows/ci-cd.yml)
 
-Sistema de seguimiento de vuelos con pipeline DevOps completo:
-automatización de pruebas, contenedorización con Docker y despliegue
-continuo mediante GitHub Actions.
+Sistema web moderno para la gestión de operaciones aeroportuarias, desarrollado como caso de estudio DevOps para AeroPuerto Smart.
 
----
+## 🚀 Características
 
-## Equipo de trabajo
+- **Dashboard en tiempo real** - Métricas y estadísticas de operaciones
+- **Gestión de vuelos** - Consulta, búsqueda y seguimiento de itinerarios
+- **Sistema de notificaciones** - Alertas automáticas de cambios de vuelo
+- **Reporte de equipaje** - Gestión de incidencias con equipaje
 
-| # | Rol DevOps | Responsabilidad principal |
-|---|---|---|
-| Integrante 1 | Analista DevOps | Investigación, diagnóstico del caso y conceptualización |
-| Integrante 2 | Desarrollador principal | Aplicación base FlyTrack y estructura del repositorio |
-| Integrante 3 | QA / Calidad | Pruebas unitarias automatizadas y validación de calidad |
-| Integrante 4 | DevOps / Operaciones | Docker, GitHub Actions, CI/CD y despliegue a staging |
-| Integrante 5 | Documentación y comunicación | Informe técnico, evidencias y presentación final |
+## 🛠️ Stack Tecnológico
 
----
+### Frontend
+- React 18 + TypeScript
+- Vite (Build tool)
+- React Router v6
+- Tailwind CSS
+- Axios
 
-## Stack tecnológico
+### Backend
+- Node.js 20+ con ES Modules
+- Express.js
+- SQLite (better-sqlite3)
+- Arquitectura en capas
 
-- **Lenguaje:** Python
-- **Pruebas:** pytest
-- **Calidad de código:** flake8 / pylint
-- **Contenedor:** Docker + Docker Compose
-- **CI/CD:** GitHub Actions
-- **Control de versiones:** Git + GitHub
+### DevOps
+- Docker + Docker Compose
+- GitHub Actions CI/CD
+- Testing automatizado (Jest + Vitest)
 
----
+## 📋 Prerequisitos
 
-## Estructura del proyecto
--- pegar aca 
+- Node.js 20.x o superior
+- Docker y Docker Compose (opcional, para containerización)
+- Git
 
----
+## 🏃 Inicio Rápido
 
-## Pipeline CI/CD
+### Opción 1: Ejecución Local (Desarrollo)
 
-El pipeline automatiza las siguientes etapas en orden:
-
-1. **Instalación de dependencias** — `pip install -r requirements.txt`
-2. **Pruebas unitarias** — `pytest tests/`
-3. **Análisis de calidad** — `flake8 src/`
-4. **Build de imagen Docker** — `docker build`
-5. **Despliegue a staging** — `docker compose up`
-
----
-
-## Cómo ejecutar localmente
-
-## Backend
-# Construir la imagen
-docker build -t flytrack-backend .
-
-## Ejecutar el contenedor
-docker run -p 3000:3000 --name flytrack-api flytrack-backend
-## Probar
-localhost:3000/api/flights
-
+#### 1. Clonar el repositorio
 ```bash
-# Clonar el repositorio
-git clone https://github.com/<org>/flytrack-devops-pipeline.git
-cd flytrack-devops-pipeline
-
-# Ejecutar con Docker Compose
-docker compose up
-
-# O ejecutar directamente
-pip install -r requirements.txt
-python src/main.py
+git clone https://github.com/tu-usuario/flytrack.git
+cd flytrack
 ```
 
----
-
-## Cómo ejecutar las pruebas
-
+#### 2. Configurar variables de entorno
 ```bash
-pip install -r requirements.txt
-pytest tests/ -v
+# Copiar archivos de ejemplo
+cp .env.example .env
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
 ```
 
----
+#### 3. Backend
+```bash
+cd backend
+npm install
+npm run seed    # Poblar base de datos con datos de prueba
+npm run dev     # Inicia en http://localhost:3000
+```
 
-## Coordinación del equipo
+#### 4. Frontend (en otra terminal)
+```bash
+cd frontend
+npm install
+npm run dev     # Inicia en http://localhost:5173
+```
 
-| Integrante | Se coordina principalmente con |
-|---|---|
-| 1 — Analista | 4 (pipeline) y 5 (informe) |
-| 2 — Desarrollo | 3 (pruebas) y 4 (Docker/CI) |
-| 3 — QA | 2 (código) y 4 (pipeline) |
-| 4 — DevOps | 2, 3 y 5 (evidencias técnicas) |
-| 5 — Documentación | Todos los integrantes |
+### Opción 2: Ejecución con Docker Compose (Producción Local)
 
----
+```bash
+# Desde la raíz del proyecto
+docker-compose up --build
 
-## Contexto académico
+# Acceder a:
+# Frontend: http://localhost:80
+# Backend API: http://localhost:3000
+```
 
-Práctica de la asignatura de DevOps.
-**Caso:** AeroPuerto Smart necesita modernizar el proceso de desarrollo
-y despliegue de su sistema FlyTrack aplicando principios y herramientas DevOps.
+## 🧪 Ejecutar Tests
 
-**Problema central:** el equipo actual trabaja sin integración continua,
-sin pruebas automatizadas y sin entornos controlados, lo que genera
-errores en producción, despliegues manuales y falta de trazabilidad.
+### Backend
+```bash
+cd backend
+npm test              # Ejecutar todos los tests
+npm run test:watch    # Modo watch
+npm run test:coverage # Con cobertura
+```
 
-**Solución propuesta:** implementar un pipeline CI/CD completo con
-automatización de pruebas, contenedorización Docker y despliegue
-continuo a un entorno de staging controlado.
+### Frontend
+```bash
+cd frontend
+npm test
+```
 
-## Arbol estructura del proyecto
-flytrack/
-├── .github/
-│   └── workflows/
-│       └── ci-cd.yml
-├── backend/
-│   ├── src/
-│   │   ├── config/
-│   │   │   └── database.js
-│   │   ├── controllers/
-│   │   │   ├── flightController.js
-│   │   │   ├── notificationController.js
-│   │   │   ├── baggageController.js
-│   │   │   └── dashboardController.js
-│   │   ├── routes/
-│   │   │   ├── flightRoutes.js
-│   │   │   ├── notificationRoutes.js
-│   │   │   ├── baggageRoutes.js
-│   │   │   └── dashboardRoutes.js
-│   │   ├── services/
-│   │   │   ├── flightService.js
-│   │   │   ├── notificationService.js
-│   │   │   ├── baggageService.js
-│   │   │   └── dashboardService.js
-│   │   ├── repositories/
-│   │   │   ├── flightRepository.js
-│   │   │   ├── notificationRepository.js
-│   │   │   └── baggageRepository.js
-│   │   ├── middlewares/
-│   │   │   ├── errorHandler.js
-│   │   │   └── validator.js
-│   │   ├── utils/
-│   │   │   └── seed.js
-│   │   └── app.js
-│   ├── tests/
-│   │   ├── flight.test.js
-│   │   ├── notification.test.js
-│   │   └── baggage.test.js
-│   ├── .env.example
-│   ├── .gitignore
-│   ├── Dockerfile
-│   ├── package.json
-│   └── jest.config.js
-├── frontend/
-│   ├── public/
-│   │   └── vite.svg
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── Navbar.tsx
-│   │   │   ├── FlightCard.tsx
-│   │   │   ├── NotificationCard.tsx
-│   │   │   ├── StatCard.tsx
-│   │   │   └── LoadingSpinner.tsx
-│   │   ├── pages/
-│   │   │   ├── Dashboard.tsx
-│   │   │   ├── Flights.tsx
-│   │   │   ├── Notifications.tsx
-│   │   │   └── BaggageReport.tsx
-│   │   ├── services/
-│   │   │   └── api.ts
-│   │   ├── types/
-│   │   │   └── index.ts
-│   │   ├── App.tsx
-│   │   ├── main.tsx
-│   │   └── index.css
-│   ├── .env.example
-│   ├── .gitignore
-│   ├── Dockerfile
-│   ├── index.html
-│   ├── package.json
-│   ├── tailwind.config.js
-│   ├── postcss.config.js
-│   ├── tsconfig.json
-│   ├── tsconfig.node.json
-│   └── vite.config.ts
-├── docs/
-│   └── ARQUITECTURA.md
-├── .env.example
-├── .gitignore
-├── docker-compose.yml
-└── README.md
+## 📁 Estructura del Proyecto
