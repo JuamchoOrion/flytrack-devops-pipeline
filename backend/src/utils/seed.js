@@ -175,6 +175,17 @@ function seedDatabase() {
             status: 'on-time',
             gate: 'G1'
         },
+        {
+            flight_number: 'FT002',
+            airline: 'FlyTrack Air',
+            origin: 'Armenia (AXM)',
+            destination: 'Bogotá (BOG)',
+            departure_time: new Date(Date.now() + 5 * 60 * 60 * 1000).toISOString(),
+            arrival_time: new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString(),
+            status: 'boarding',
+            gate: 'G2'
+        },
+
     ];
 
     const insertFlight = db.prepare(`
