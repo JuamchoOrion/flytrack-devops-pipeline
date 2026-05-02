@@ -164,7 +164,17 @@ function seedDatabase() {
             arrival_time: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString(),
             status: 'scheduled',
             gate: 'D6'
-        }
+        },
+        {
+            flight_number: 'FT001',
+            airline: 'FlyTrack Air',
+            origin: 'Bogotá (BOG)',
+            destination: 'Armenia (AXM)',
+            departure_time: new Date(Date.now() + 3 * 60 * 60 * 1000).toISOString(),
+            arrival_time: new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString(),
+            status: 'on-time',
+            gate: 'G1'
+        },
     ];
 
     const insertFlight = db.prepare(`

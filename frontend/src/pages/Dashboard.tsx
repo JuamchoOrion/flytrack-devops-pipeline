@@ -61,7 +61,7 @@ const Dashboard = () => {
                         Panel de Control
                     </p>
                     <h1 className="text-[1.75rem] font-bold text-white tracking-tight leading-none">Dashboard</h1>
-                    <p className="text-slate-500 text-sm mt-1.5">Operaciones en tiempo real · AeroPuerto Smart</p>
+                    <p className="text-slate-500 text-sm mt-1.5">Operaciones en tiempo real · AeroPuerto Smart v2.0 🚀</p>
                 </div>
                 <button
                     onClick={loadStats}
