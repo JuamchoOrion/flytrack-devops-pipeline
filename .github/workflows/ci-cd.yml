@@ -81,12 +81,13 @@ jobs:
       - name: Run Backend Tests
         run: |
           cd backend
-          npm test -- --coverage
+          npm run test:coverage
         env:
           NODE_ENV: test
 
       - name: Upload Backend Coverage
         uses: codecov/codecov-action@v3
+        continue-on-error: true
         with:
           files: ./backend/coverage/lcov.info
           flags: backend
@@ -171,7 +172,7 @@ jobs:
 
       - name: Test Docker Compose
         run: |
-          docker-compose config
+          docker compose config
           echo "✅ Docker Compose configuration is valid"
 
   # Job 5: Reporte de estado
