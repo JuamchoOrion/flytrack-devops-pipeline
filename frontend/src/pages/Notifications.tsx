@@ -4,98 +4,81 @@ import type { Notification } from '../types';
 import NotificationCard from '../components/NotificationCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 
+const PRIORITY_ORDER = ['urgent', 'high', 'normal', 'low'] as const;
+
+const SECTION_META: Record<string, { label: string; color: string; dot: string }> = {
+    urgent: { label: 'Urgentes',       color: 'text-red-400',    dot: 'bg-red-500'    },
+    high:   { label: 'Alta Prioridad', color: 'text-amber-400',  dot: 'bg-amber-500'  },
+    normal: { label: 'Normales',       color: 'text-sky-400',    dot: 'bg-sky-500'    },
+    low:    { label: 'Información',    color: 'text-slate-400',  dot: 'bg-slate-500'  },
+};
+
 const Notifications = () => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [error, setError]     = useState<string | null>(null);
 
-    useEffect(() => {
-        loadNotifications();
-    }, []);
+    useEffect(() => { loadNotifications(); }, []);
 
     const loadNotifications = async () => {
         try {
             setLoading(true);
-            const response = await notificationApi.getAll();
-            if (response.data.success && response.data.data) {
-                setNotifications(response.data.data);
-            }
-        } catch (err) {
+            const res = await notificationApi.getAll();
+            if (res.data.success && res.data.data) setNotifications(res.data.data);
+        } catch {
             setError('Error al cargar notificaciones');
-            console.error(err);
         } finally {
             setLoading(false);
         }
     };
 
-    const filterByPriority = (priority: string) => {
-        return notifications.filter(n => n.priority === priority);
-    };
+    const byPriority = (p: string) => notifications.filter(n => n.priority === p);
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-6 animate-fade-in">
+
+            {/* ── Header ── */}
             <div>
-                <h1 className="text-3xl font-bold text-gray-800 mb-2">Notificaciones</h1>
-                <p className="text-gray-600">Alertas y cambios de estado de vuelos</p>
+                <p className="text-[10px] font-bold text-sky-500/70 uppercase tracking-[0.2em] mb-2">Alertas</p>
+                <h1 className="text-[1.75rem] font-bold text-white tracking-tight leading-none">Notificaciones</h1>
+                <p className="text-slate-500 text-sm mt-1.5">Cambios de estado y alertas de vuelos</p>
             </div>
 
             {loading ? (
                 <LoadingSpinner />
             ) : error ? (
-                <div className="text-center text-red-600">{error}</div>
+                <div className="card text-center py-10">
+                    <p className="text-red-400 font-semibold text-sm">{error}</p>
+                </div>
             ) : notifications.length === 0 ? (
-                <div className="text-center py-12">
-                    <p className="text-gray-500 text-lg">No hay notificaciones</p>
+                <div className="card text-center py-16">
+                    <div className="text-4xl mb-4 opacity-20 select-none">📭</div>
+                    <p className="text-slate-500 font-semibold text-sm">Sin notificaciones activas</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {/* Notificaciones Urgentes */}
-                    {filterByPriority('urgent').length > 0 && (
-                        <div>
-                            <h2 className="text-lg font-semibold text-gray-800 mb-3">Urgentes</h2>
-                            <div className="space-y-3">
-                                {filterByPriority('urgent').map((notification) => (
-                                    <NotificationCard key={notification.id} notification={notification} />
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Notificaciones de Alta Prioridad */}
-                    {filterByPriority('high').length > 0 && (
-                        <div>
-                            <h2 className="text-lg font-semibold text-gray-800 mb-3">Alta Prioridad</h2>
-                            <div className="space-y-3">
-                                {filterByPriority('high').map((notification) => (
-                                    <NotificationCard key={notification.id} notification={notification} />
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Notificaciones Normales */}
-                    {filterByPriority('normal').length > 0 && (
-                        <div>
-                            <h2 className="text-lg font-semibold text-gray-800 mb-3">Normales</h2>
-                            <div className="space-y-3">
-                                {filterByPriority('normal').map((notification) => (
-                                    <NotificationCard key={notification.id} notification={notification} />
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Notificaciones de Baja Prioridad */}
-                    {filterByPriority('low').length > 0 && (
-                        <div>
-                            <h2 className="text-lg font-semibold text-gray-800 mb-3">Información</h2>
-                            <div className="space-y-3">
-                                {filterByPriority('low').map((notification) => (
-                                    <NotificationCard key={notification.id} notification={notification} />
-                                ))}
-                            </div>
-                        </div>
-                    )}
+                <div className="space-y-8">
+                    {PRIORITY_ORDER.map(p => {
+                        const items = byPriority(p);
+                        if (items.length === 0) return null;
+                        const { label, color, dot } = SECTION_META[p];
+                        return (
+                            <section key={p}>
+                                {/* Section header */}
+                                <div className="flex items-center gap-3 mb-3">
+                                    <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${dot}`} />
+                                    <span className={`text-[11px] font-bold uppercase tracking-widest ${color}`}>
+                                        {label}
+                                    </span>
+                                    <span className="font-mono text-[11px] text-slate-700">{items.length}</span>
+                                    <div className="flex-1 h-px" style={{ background: 'rgba(148,163,184,0.06)' }} />
+                                </div>
+                                {/* Cards */}
+                                <div className="space-y-2">
+                                    {items.map(n => <NotificationCard key={n.id} notification={n} />)}
+                                </div>
+                            </section>
+                        );
+                    })}
                 </div>
             )}
         </div>

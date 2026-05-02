@@ -104,7 +104,54 @@ https://[DOMINIO]
 Health check del backend:
 https://[DOMINIO]/api/health
 
-## 📁 Estructura del Proyecto
+---
+
+## 🔄 Pipeline CI/CD
+
+El proyecto incluye un flujo de integración y entrega continua mediante **GitHub Actions** (`.github/workflows/ci-cd.yml`) que se ejecuta en cada push y pull request a las ramas `main` y `develop`.
+
+### Etapas del Pipeline
+
+#### 1️⃣ **Install** - Instalación de dependencias
+- Configura Node.js 20
+- Cachea dependencias de backend y frontend
+- Ejecuta `npm ci` en ambos directorios
+- **Tiempo aproximado:** 1-2 minutos
+
+#### 2️⃣ **Test** - Ejecución de pruebas
+- Restaura dependencias cacheadas
+- **Backend:** Ejecuta `npm run test:coverage` (Jest + Supertest)
+- Sube cobertura a Codecov (opcional si falla)
+- **Frontend:** Ejecuta `npm test` (Vitest)
+- **Tiempo aproximado:** 2-3 minutos
+- ✅ Cobertura backend actual: **85.6% statements, 73.84% branches, 94.44% functions**
+
+#### 3️⃣ **Build** - Construcción de aplicaciones
+- Restaura dependencias cacheadas
+- **Frontend:** Ejecuta `npm run build` (Vite)
+- Genera carpeta `dist/` optimizada
+- Sube artefactos para 7 días
+- **Tiempo aproximado:** 1-2 minutos
+
+#### 4️⃣ **Docker** - Validación de contenedores
+- Configura Docker Buildx
+- Construye imagen backend desde `backend/Dockerfile`
+- Construye imagen frontend desde `frontend/Dockerfile`
+- Valida `docker-compose.yml` con `docker compose config`
+- **Tiempo aproximado:** 2-5 minutos (depende del cache)
+
+#### 5️⃣ **Report** - Reporte final
+- Siempre se ejecuta (incluso si hay fallos)
+- Imprime el estado de cada job anterior
+- Proporciona visibilidad general del pipeline
+
+### Estadísticas del Pipeline
+- **Duración total:** ~10-15 minutos
+- **Eventos que lo disparan:** Push a `main` y `develop`, Pull Requests
+- **Estado actual:** [![CI/CD Pipeline](https://github.com/JuamchoOrion/flytrack-devops-pipeline/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/JuamchoOrion/flytrack-devops-pipeline/actions/workflows/ci-cd.yml)
+
+---
+
 
 ```
 flytrack-devops-pipeline/
